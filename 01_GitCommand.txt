@@ -1,0 +1,26 @@
+#Create Github repository from scratch#
+1. Create git repository name
+https://github.com/new
+Input: 01_CommonThings
+Get: https://github.com/RyanCA/01_CommonThings.git
+
+2. Commit your local source code for the first time
+git init #Not have git file, so use git init command
+git add .
+git commit -m "First commit from client"
+git remote -v 
+git remote add origin https://github.com/RyanCA/01_CommonThings.git
+git remote -v
+git push -u origin master
+git status
+
+
+
+1. A new repo from an existing project
+Go into the directory containing the project.
+$ git init .
+Type git add to add all of the relevant files.
+$ git add ...
+You'll probably want to create a .gitignore file right away, to indicate all of the files you don't want to track. Use git add .gitignore , too.
+Type git commit .
+$ git commit
