@@ -1,0 +1,263 @@
+###############################################################################
+######### 1. Routine Procedure for commiting code to PWOB project     #########
+###############################################################################
+
+#1. Get source code from Git
+git clone -b develop ...
+
+#March Release
+git clone -b r1703 ...
+
+#2. Get latest source code (it equals to git fetch + git merge)
+git pull
+
+#3. After git pull, you can see latest git commits history
+git log --stat
+
+Or use below one for files with whole path:
+git show --pretty --name-only 6a68a83b3efcc8bbd8a887c841890d67a03f48b7
+
+#4. Find out your local file changes
+git status
+
+#5. Add the ones you want commit and push to Git
+git add src/*.mediation
+
+#
+git diff src/*.wsdl
+git add src/*.wsdl
+
+
+#6. Commit with comments 
+git commit -m "Auto deployment ..."
+
+
+#7. git remote -v and git branch -a can give you an idea where (which remote and which branch) you want to push your commit
+$ git remote -v
+origin  ... (fetch)
+origin  ... (push)
+
+#List all branches
+$ git branch -a
+* develop
+  ...
+  remotes/origin/master
+  
+#show current branch:
+$ git rev-parse --abbrev-ref HEAD
+develop
+
+#Not successful to run this to show the different commits between local and remote server???
+$git log develop..origin/develop
+
+
+#8. After step 7, we choose to push commit to origin develop branch
+git push origin develop
+
+#9. Check if new changes has been pushed into Git server
+git log
+git log src/*.mediation
+git checkout 71aff7019490143f59e1586236d4d6ecf9fcc741 src/*.mediation
+
+###############################################################################
+######### 2. Useful git command set                                   #########
+###############################################################################
+
+#1. Show which branch that the commit belongs to
+$ git branch --contains 6a68a83b3efcc8bbd8a887c841890d67a03f48b7
+* develop
+
+#2. Show git commit history for a specific file
+git log src/*.mediation
+
+#3. Show git commit history for whole project
+git log
+OR
+
+#This one can list file names got changed for each commit
+git log --stat
+
+#4. git show all file changes for a given commit id (very similar to $git log --stat)
+git show --pretty --name-only 6a68a83b3efcc8bbd8a887c841890d67a03f48b7
+git show --pretty --name-only 1c191b8ffdcde340fd3cd58f526bc4eb03f2d26f
+git show --pretty --name-only dd5776b3c3f615364ed38574adbdda782ef939cc
+
+###############################################################################
+######### Good Practice 1: Git bring back code with old version ###############
+###############################################################################
+#Find the right commit you want, check them out to replace local file, commit them and push again.
+git checkout 9aacdcf63132cdacce60471ddca15f1c52e14a68 src/*.xsd
+git checkout 9aacdcf63132cdacce60471ddca15f1c52e14a68 src/*.mediation
+git status
+git commit -m "The mapping of ..."
+git push origin develop
+
+###############################################################################
+######### Good Practice 2: Git switch branches and commit code  ###############
+###############################################################################
+git checkout r1707_R5
+#The one marked with * asterisk is the branch currently working on
+git branch -a 
+git status
+git add src/*.wsdl
+git add src/*.mediation
+git commit -m "Finish set context tasks ..."
+git status 
+#you can push to different branches not only r1707_R5
+git push origin r1707_R5 
+
+###############################################################################
+######### Good Practice 3: Git find local commit code but yet push remote #####
+###############################################################################
+#format: origin/branchname..HEAD
+git log origin/r1707_R5..HEAD
+
+Case 1: No local commit ahead of remote server
+$ git log origin/r1705..HEAD
+
+Case 2: There is local commit ahead of remote server:
+$ git log origin/r1705..HEAD
+commit 02cdfa6c5c04b4c874055281baa3b947950d23c4
+...
+Date:   Tue Jun 6 21:14:38 2017 +0100
+
+
+###############################################################################
+######### Good Practice 4: Real case of rolling back mis-commited file ########
+###############################################################################
+
+#1. Find out which file you want to roll back and roll back to which version
+git log
+OR
+git log --stat
+
+#2. Check out right version, which is going to replace latest mis-commited code
+#Sample: check out version of dd5776b3c3f615364ed38574adbdda782ef939cc for a file
+git checkout dd5776b3c3f615364ed38574adbdda782ef939cc src/.../*.mediation
+
+#3. NOT NECESSARY every time: It applys for this specific case.
+#   Compare the first checkout one with the one stored in a email.
+#   (They are actual in the same version, below command should show no difference)
+cmp src/.../*.mediation ~/*.mediation
+
+#4. Copy the checkout file as fileName_Copy (This is a backup for the right file 
+#   and it will be used in STEP 6) 
+
+#5. Get latest code from git for this file, and it will overwrite the just 
+#   checkout file with right version
+git pull
+
+OR
+
+git fetch
+git merge
+ 
+#6. Replace the latest file with the backup file. Refer to STEP 4 
+
+#7. Now compare the latest file and the backup file, they should be the same
+Sample:
+$ cmp src/.../*.mediation src/.../*_3rdcommit.mediation
+
+#8. Start the normal source commit procedure now.
+git status
+git add src/.../*.mediation
+git commit -m "Revert back to Ryan latest code for *.mediation to 03f48b7 in order to replace David code"
+git remote -v #Not necessary
+git branch -a #Not necessary
+git push origin develop
+git log       #it should show you the new version of git commit
+OR
+#it should show you the new version of git commit as well
+git log src/.../*.mediation
+
+# How to compare two filesIf no differences are found, by default, cmp returns no output.
+$ cmp *.mediation CopyOf*.mediation
+
+
+
+
+###############################################################################
+######### 4. Questions and Concerns                                   #########
+###############################################################################
+The command 1 doesn't show my commit;
+The command 2 show my commits;
+The command 3 show my specific commit with details;
+My question is how can "git log filename" and "git log" show different commist history??????
+
+1. git log src/.../*.mediation
+2. git log
+3. git show --pretty --name-only 6a68a83b3efcc8bbd8a887c841890d67a03f48b7
+
+TRY TO Merge BELOW CONTENTS
+
+###############################################################################
+########### Git command line                                         ##########
+###############################################################################
+
+#Git fech code
+git clone -b develop gitsrv:Wealth/PWOB
+
+#1. List all branches local and remote 
+(git branch      #list local branches only)
+(git branch -r   #list remote branches only) 
+$ git branch -a
+* develop
+  list
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/develop
+  remotes/origin/f_exceptionHandling
+  remotes/origin/jan_release
+  remotes/origin/master
+
+#2. Git show tags
+$ git tag -n           # -n disply first line of annotaion mesage or commit
+version_1.0
+
+$ git show-ref --tags  # This command shows tags with correspondent commits
+9921031733d19bd357f00765c1b0165e9420efff refs/tags/version_1.0
+
+#3. To have an overview of each commit
+# You better to run git fetch to get latest source code, otherwiswe, 
+# you won't get latest commit information for command git log.
+# It only shows you the commit infomation up to the date you fetch the code.
+
+$ git log --stat # OR USE  $git log remotes/origin/develop --stat
+commit 82027e3d8063b72bf1715d0f09ee824ec766e524
+Author: ......
+Date:   Tue Feb 14 07:47:46 2017 -0500
+
+    Fixes to cancel
+
+ src/*.ldif         | 710 +++++++++++++++++++++
+ ...
+ ...
+ 8 files changed, 911 insertions(+), 72 deletions(-)
+
+......
+
+#To show the tree
+$ git log --pretty=format:"%h %s" --graph
+* 82027e3 Fixes to cancel
+* cc522ae Added cancel and unlock
+......
+* 2d3a753 ...
+*   a051c7d Merge branch ...
+|\
+| * 6fa373c Renamed Services/References
+* | f87cf72 Renamed Services/References
+......
+
+
+###############################################################################
+######### Git status (Fixed errors) for version of 2017/02/24   ###############
+###############################################################################
+$ git status
+On branch develop
+Your branch is up-to-date with 'origin/develop'.
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   src/.../*.form
+        deleted:    src/.../*.properties
+no changes added to commit (use "git add" and/or "git commit -a")
