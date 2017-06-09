@@ -3,7 +3,7 @@
 ###############################################################################
 
 #1. Get source code from Git
-git clone -b develop ...
+git clone -b develop ...URL
 
 #March Release
 git clone -b r1703 ...
@@ -195,18 +195,14 @@ TRY TO Merge BELOW CONTENTS
 ###############################################################################
 
 #Git fech code
-git clone -b develop gitsrv:Wealth/PWOB
+git clone -b develop ...URL
 
 #1. List all branches local and remote 
 (git branch      #list local branches only)
 (git branch -r   #list remote branches only) 
 $ git branch -a
 * develop
-  list
-  remotes/origin/HEAD -> origin/master
-  remotes/origin/develop
-  remotes/origin/f_exceptionHandling
-  remotes/origin/jan_release
+  ...
   remotes/origin/master
 
 #2. Git show tags
