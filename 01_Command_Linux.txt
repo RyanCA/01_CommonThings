@@ -1,56 +1,285 @@
-#For SIT1 log download#Use scp to copy logscp username@hostmachine:/opt/tibco/amx-bpm/data/tibco/data/tibcohost/Admin-BPM-BPM/data_3.2.x/nodes/BPMNode01/logs/BPMNode01.log BPMNode01.log
 
-------------------------------------------------------------------------------------------------------      Windows command      ------------------------------------------------------------------------------------------------------------########################################################################## Forword request from localhost to your VMWare instance ############ For Window CMD only                                    ##########################################################################netsh interface portproxy add v4tov4 listenport=8120 listenaddress=192.168.201.1 connectport=8120 connectaddress=192.168.201.128 netsh interface portproxy add v4tov4 listenport=1521 listenaddress=192.168.201.1 connectport=1521 connectaddress=192.168.201.128netsh interface portproxy add v4tov4 listenport=8080 listenaddress=192.168.201.1 connectport=8080 connectaddress=192.168.201.128netsh interface portproxy add v4tov4 listenport=8080 listenaddress=127.0.0.1 connectport=8080 connectaddress=192.168.201.128
-netsh interface portproxy delete v4tov4 listenport=4422 listenaddress=192.168.1.111netsh interface portproxy delete v4tov4 listenport=8120 listenaddress=172.17.90.115netsh interface portproxy show all
-########################################################################## Get IP address by domain name                          ############ For both Windows and Linux command                     ###########################################################################Based on IP address to get domain name or vice versa> nslookup www.google.comServer:  sysdev-dc4.sysdev.adroot.bmogc.netAddress:  172.17.113.111
-Non-authoritative answer:Name:    www.google.comAddresses:  2607:f8b0:400b:80a::2004          172.217.3.132    > nslookup  172.217.3.132Server:  sysdev-dc4.sysdev.adroot.bmogc.netAddress:  172.17.113.111
-Name:    yyz08s13-in-f4.1e100.netAddress:  172.217.3.132    ------------------------------------------------------------------------------------------------------      Linux command      --------------------------------------------------------------------------------------------------------------http://ss64.com/vi.htmlhttp://ss64.com/bash/find.html
-https://www.tutorialspoint.com/unix/unix-system-performance.htmCommands for system performance analysis
-https://www.tutorialspoint.com/unix/unix-processes.htm Running process in foreground or background?
+
+-------------------------------------------------------------------------------
+-----------------------      Windows command      -----------------------------
+-------------------------------------------------------------------------------
+####################################################################
+###### Forword request from localhost to your VMWare instance ######
+###### For Window CMD only                                    ######
+####################################################################
+netsh interface portproxy add v4tov4 listenport=8120 listenaddress=192.168.201.1 connectport=8120 connectaddress=192.168.201.128 
+netsh interface portproxy add v4tov4 listenport=1521 listenaddress=192.168.201.1 connectport=1521 connectaddress=192.168.201.128
+netsh interface portproxy add v4tov4 listenport=8080 listenaddress=192.168.201.1 connectport=8080 connectaddress=192.168.201.128
+netsh interface portproxy add v4tov4 listenport=8080 listenaddress=127.0.0.1 connectport=8080 connectaddress=192.168.201.128
+
+
+netsh interface portproxy delete v4tov4 listenport=4422 listenaddress=192.168.1.111
+netsh interface portproxy delete v4tov4 listenport=8120 listenaddress=172.17.90.115
+netsh interface portproxy show all
+
+####################################################################
+###### Get IP address by domain name                          ######
+###### For both Windows and Linux command                     ######
+####################################################################
+#Based on IP address to get domain name or vice versa
+> nslookup www.google.com
+Server:  sysdev-dc4.sysdev.adroot.bmogc.net
+Address:  172.17.113.111
+
+Non-authoritative answer:
+Name:    www.google.com
+Addresses:  2607:f8b0:400b:80a::2004
+          172.217.3.132
+		  
+> nslookup  172.217.3.132
+Server:  sysdev-dc4.sysdev.adroot.bmogc.net
+Address:  172.17.113.111
+
+Name:    yyz08s13-in-f4.1e100.net
+Address:  172.217.3.132
+
+-------------------------------------------------------------------------------
+-----------------------      Java command       -------------------------------
+-------------------------------------------------------------------------------
+#####################################################
+###### Find out right java program and kill it ######
+#####################################################
+
+#1. To find out winpid (As you can see, you have to pass in some parameters when you run your java program, this way can help you distiguish your program with others)
+$ jps -v
+7496 Jps -Dapplication.home=C:\Program Files\Java\jdk1.8.0_131 -Xms8m
+8716 jar -Dname=MornitoringWealthManagement -Dspring.profiles.active=default,dev
+
+#2. Based on winpid to find out process id
+$ ps /help
+      PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
+     6208    8808    6208       6312  cons1    1686989 13:54:37 /usr/bin/ps
+     9068    8808    9068       8716  cons1    1686989   Sep 18 /cygdrive/c/Program Files/Java/jdk1.8.0_131/bin/java
+     8808       1    8808       8808  cons1    1686989   Sep 18 /usr/bin/bash
+     5236       1    5236       5236  cons0    1686989   Sep 18 /usr/bin/bash
+
+#3. Use kill to stop the java program
+kill -9 9068
+		  
+-------------------------------------------------------------------------------
+-----------------------      Linux command      -------------------------------
+-------------------------------------------------------------------------------
+http://ss64.com/vi.html
+http://ss64.com/bash/find.html
+
+https://www.tutorialspoint.com/unix/unix-system-performance.htm
+Commands for system performance analysis
+
+https://www.tutorialspoint.com/unix/unix-processes.htm 
+Running process in foreground or background?
+
 https://www.tutorialspoint.com/unix/unix-special-variables.htm
-#Shutdown the computer$>shutdown
-#See how many lines$>ps -ef | wc -l
-#Compare the difference between 2 files$>diff ryan_before.txt ryan_after.txt 
-#Sort the output by 3rd and 4th column$>ps -ef | sort -k 3,4
-#in vi edtior, how to go back to previous cursor positionctrl+o
-###############################################What type of shell is running###############################################echo $SHELLecho $0
-###############################################         vi                  ###############################################http://ss64.com/vi.html
-###How to find the file name in vi (vi related)###In vi window, input ":f + enter"
-###How to go back to the location of previous cursor in vi###You can use ctrl+o (letter o) to go backYou can use ctrl+i to go forwardSo ctrl+o and ctrl+i always bring you back and forth. 
-###How to set search in vi sensitive or insensitive###https://stackoverflow.com/questions/2287440/how-to-do-case-insensitive-search-in-vim:set ic   # set ignore case sensitive:set noic # go back to case sensitive
-Or use \c or \C in the end of search string in vi read mode:/abc\c #Lower case c represents case insensitve/abc\C #Upper case C represents case sensitive
-###Search in OR/AND conditions###https://www.linuxquestions.org/questions/linux-software-2/searching-multiple-patterns-through-vi-editor-725155/eg: Search in OR conditions/abc\|efg
-eg: Search in AND conditions/abc\&efg
-###############################################         Find Folders        ###############################################http://ss64.com/bash/find.html
-Eg: Try to find folder amx.bpm.app in under path of /home/bpmadm/TIBCO_HOME/tibco The exact path is: /home/bpmadm/TIBCO_HOME/tibco/data/bpm/amx.bpm.app/keystores
-#Case 1: Find command used not correctly[bpmadm@localhost tibco]$ pwd/home/bpmadm/TIBCO_HOME/tibco[bpmadm@localhost tibco]$ find amx.bpm.appfind: ‘amx.bpm.app’: No such file or directory
-#Case 2: Find command used correctly[bpmadm@localhost tibco]$ pwd/home/bpmadm/TIBCO_HOME/tibco[bpmadm@localhost tibco]$ find  -name amx.bpm.app./data/admin/AMX-BPM/shared/repo/trunk/env/BPMEnvironment/apps/amx.bpm.app./data/bpm/amx.bpm.app
-#Other cases:find . -name "*.zip*"
-#List all the directory and sub-directory names: $ find . -type d
-#List all files in those sub-directories (but not the directory names) $ find . -type f
-#List all the file links: $ find . -type l
-#Run 'myapp' on every file in or below the current directory. #Notice that the braces are enclosed in single quote marks to protect them from interpretation as shell script punctuation. eg: $>#The semicolon is similarly protected by the use of a backslash, though ';' could have been used in that case also.#Execute command; true if 0 status is returned. All following arguments to find are taken to be arguments to the command until an argument consisting of ';' is encountered. #The string '{}' is replaced by the current file name being processed everywhere it occurs in the arguments to the command, not just in arguments where it is alone, as in some versions of find.
-Eg01:$ find . -type f -exec myapp '{}' \; 
-Eg:02:# -H represents file name; -n represents matched line number;$ [bpmadm@localhost schemas]$ find . -name "*.xsd" -exec grep -H -n SoapRefBinding '{}' \;
 
-#${var} vs $var #NOT figure out???http://stackoverflow.com/questions/8748831/when-do-we-need-curly-braces-in-variables-using-bash
-#Shell command in curly brace{} #NOT figure out???http://unix.stackexchange.com/questions/127334/bash-subshell-creation-with-curly-braces
-#Execute command in sequence http://stackoverflow.com/questions/5130847/shell-multiple-commands-in-one-line#Execute only if command before && is executed successfullycp /templates/apple /templates/used && mv /templates/apple /templates/inuse
-#Execute only if command before || is executed failedcp /templates/apple /templates/used || mv /templates/apple /templates/inuse
-#Execute regardless command before ; is executed successfully or notcp /templates/apple /templates/used; mv /templates/apple /templates/inuse
-#Find matched log based on a pattern and also display number of lines of leading and trailing context (Defined by -C)grep -C 1 "Jan 2017 12:17:32" BPM.log 
-#Verified (vi related)#Find matched string with OR condition( You can use \| in vi as well to search for OR conditions eg:in vi search mode, INPUT /abc\|efg   )grep -n  '24 Jan 2017 16:01\|updateWorkflowRequest.getStepId' BPM.log (-n show line number)grep -e '24 Jan 2017 16:01' -e 'updateWorkflowRequest.getStepId' BPM.log (in -e mode, it means you can only with one value for each -e)grep -E '24 Jan 2017 16:01|updateWorkflowRequest.getStepId' BPM.log (in -E mode, it means extended regex, you don't need to user \ in this mode)
-#Verified (vi related)#Find matched string with AND condition (You can use \& in vi to search for AND conditions eg: in vi seach mode, INPUT /.*24 Jan 2017 16:01\&.*updateWorkflowRequest.getStepId  )#There is no AND operator in grep, but you can have AND operator in -E modegrep -E '24 Jan 2017 16:01.*updateWorkflowRequest.getStepId' BPM.log (in the order of time goes first and getStepId follows it)grep -E '24 Jan 2017 16:01.*updateWorkflowRequest.getStepId|updateWorkflowRequest.getStepId.*24 Jan 2017 16:01' BPM.log (in any order, times goes first or time goes last)
-#Find matched string with NON-Match conditionps -f | grep -v ps
+#Shutdown the computer
+$>shutdown
 
- #nohup# & in the end of the commandnohup allows the background process to continue running even after the user logs out (or exits the initiating shell).& runs the whole thing in the background, giving you your prompt back immediately
-#Print desiganted number of lines in a filesed -n -e 29019,29581p BPM.log
-#How to compare two filesIf no differences are found, by default, cmp returns no output.$ cmp OpenAccountMediation.mediation CopyOpenAccountMediation.mediation
-###############################################    Display OS Inforamtion   ###############################################Way 1:$> uname -a
-Way 2:$> cat /proc/version
 
-###############################################      List all OS users      ###############################################The /etc/passwd file is a text file with one record per line, each describing a user account. Each record consists of seven fields separated by colons. The ordering of the records within the file is generally unimportant.The /etc/group − This file contains the group information for each account.
-An example record may be:root:x:0:0:root:/root:/bin/bashbpmadm:x:1000:1000:bpm_4_0:/home/bpmadm:/bin/bash
-The fields, in order from left to right, are:1. User name: the string a user would type in when logging into the operating system2. Information used to validate a user's password; in most modern uses, this field is usually set to "x" (or "*", or some other indicator) with the actual password information being stored in a separate shadow password file.3. user identifier number, used by the operating system for internal purposes. It need not be unique.4. group identifier number, which identifies the primary group of the user; all files that are created by this user may initially be accessible to this group.5. Gecos field, commentary that describes the person or account. Typically, this is a set of comma-separated values including the user's full name and contact details. (bpm_4_0 in the example)6. Path to the user's home directory.7. Program that is started every time the user logs into the system. For an interactive user, this is usually one of the system's command line interpreters (shells).
-Eg:#Case 1: Search matched lines and with number (here is 2) of lines in preceding and trailing[bpmadm@localhost tibco]$ cat /etc/passwd | grep -n --context=2 root1:root:x:0:0:root:/root:/bin/bash2-bin:x:1:1:bin:/bin:/sbin/nologin3-daemon:x:2:2:daemon:/sbin:/sbin/nologin--8-halt:x:7:0:halt:/sbin:/sbin/halt9-mail:x:8:12:mail:/var/spool/mail:/sbin/nologin10:operator:x:11:0:operator:/root:/sbin/nologin11-games:x:12:100:games:/usr/games:/sbin/nologin12-ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
-#Case 2: Search with or condition -> -e "Condition 1\|Condition 2" OR -e 'Condition 1\|Condition 2' (Single or Double Quotes, no difference)[bpmadm@localhost tibco]$ cat /etc/passwd | grep -n -e 'root\|mail'1:root:x:0:0:root:/root:/bin/bash9:mail:x:8:12:mail:/var/spool/mail:/sbin/nologin10:operator:x:11:0:operator:/root:/sbin/nologin
+#See how many lines
+$>ps -ef | wc -l
+
+#Compare the difference between 2 files
+$>diff ryan_before.txt ryan_after.txt 
+
+#Sort the output by 3rd and 4th column
+$>ps -ef | sort -k 3,4
+
+#in vi edtior, how to go back to previous cursor position
+ctrl+o
+
+#########################################
+######What type of shell is running######
+#########################################
+echo $SHELL
+echo $0
+
+####################################################################
+###### downloading log from hosting machine to remote machine ######
+####################################################################
+#For SIT1 log download
+scp bpmadm@hostingmachinename:/opt/tibco/amx-bpm/data/tibco/data/tibcohost/Admin-BPM-BPM/data_3.2.x/nodes/BPMNode01/logs/BPMNode01.log BPMNode01.log
+scp bpmadm@bpm8bcclstapp01.srv.bmogc.net:/opt/tibco/amx-bpm/data/tibco/data/tibcohost/Admin-BPM-BPM/data_3.2.x/nodes/BPMNode01/logs/BPMNode01.log BPMNode01.log
+
+#########################################
+######         vi                  ######
+#########################################
+http://ss64.com/vi.html
+
+###How to find the file name in vi (vi related)###
+In vi window, input ":f + enter"
+
+###How to go back to the location of previous cursor in vi###
+You can use ctrl+o (letter o) to go back
+You can use ctrl+i to go forward
+So ctrl+o and ctrl+i always bring you back and forth. 
+
+###How to set search in vi sensitive or insensitive###
+https://stackoverflow.com/questions/2287440/how-to-do-case-insensitive-search-in-vim
+:set ic   # set ignore case sensitive
+:set noic # go back to case sensitive
+
+Or use \c or \C in the end of search string in vi read mode:
+/abc\c #Lower case c represents case insensitve
+/abc\C #Upper case C represents case sensitive
+
+###Search in OR/AND conditions###
+https://www.linuxquestions.org/questions/linux-software-2/searching-multiple-patterns-through-vi-editor-725155/
+eg: Search in OR conditions
+/abc\|efg
+
+eg: Search in AND conditions
+/abc\&efg
+
+#########################################
+######         Find Folders        ######
+#########################################
+http://ss64.com/bash/find.html
+
+Eg: 
+Try to find folder amx.bpm.app in under path of /home/bpmadm/TIBCO_HOME/tibco 
+The exact path is: /home/bpmadm/TIBCO_HOME/tibco/data/bpm/amx.bpm.app/keystores
+
+#Case 1: Find command used not correctly
+[bpmadm@localhost tibco]$ pwd
+/home/bpmadm/TIBCO_HOME/tibco
+[bpmadm@localhost tibco]$ find amx.bpm.app
+find: ‘amx.bpm.app’: No such file or directory
+
+#Case 2: Find command used correctly
+[bpmadm@localhost tibco]$ pwd
+/home/bpmadm/TIBCO_HOME/tibco
+[bpmadm@localhost tibco]$ find  -name amx.bpm.app
+./data/admin/AMX-BPM/shared/repo/trunk/env/BPMEnvironment/apps/amx.bpm.app
+./data/bpm/amx.bpm.app
+
+#Other cases:
+find . -name "*.zip*"
+
+#List all the directory and sub-directory names: 
+$ find . -type d
+
+#List all files in those sub-directories (but not the directory names) 
+$ find . -type f
+
+#List all the file links: 
+$ find . -type l
+
+#Run 'myapp' on every file in or below the current directory. 
+#Notice that the braces are enclosed in single quote marks to protect them from interpretation as shell script punctuation. eg: $>
+#The semicolon is similarly protected by the use of a backslash, though ';' could have been used in that case also.
+#Execute command; true if 0 status is returned. All following arguments to find are taken to be arguments to the command until an argument consisting of ';' is encountered. 
+#The string '{}' is replaced by the current file name being processed everywhere it occurs in the arguments to the command, not just in arguments where it is alone, as in some versions of find.
+
+Eg01:
+$ find . -type f -exec myapp '{}' \; 
+
+Eg:02:
+# -H represents file name; -n represents matched line number;
+$ [bpmadm@localhost schemas]$ find . -name "*.xsd" -exec grep -H -n SoapRefBinding '{}' \;
+
+
+
+#${var} vs $var #NOT figure out???
+http://stackoverflow.com/questions/8748831/when-do-we-need-curly-braces-in-variables-using-bash
+
+#Shell command in curly brace{} #NOT figure out???
+http://unix.stackexchange.com/questions/127334/bash-subshell-creation-with-curly-braces
+
+
+#Execute command in sequence http://stackoverflow.com/questions/5130847/shell-multiple-commands-in-one-line
+#Execute only if command before && is executed successfully
+cp /templates/apple /templates/used && mv /templates/apple /templates/inuse
+
+#Execute only if command before || is executed failed
+cp /templates/apple /templates/used || mv /templates/apple /templates/inuse
+
+#Execute regardless command before ; is executed successfully or not
+cp /templates/apple /templates/used; mv /templates/apple /templates/inuse
+
+#Find matched log based on a pattern and also display number of lines of leading and trailing context (Defined by -C)
+grep -C 1 "Jan 2017 12:17:32" BPM.log 
+
+#Verified (vi related)
+#Find matched string with OR condition( You can use \| in vi as well to search for OR conditions eg:in vi search mode, INPUT /abc\|efg   )
+grep -n  '24 Jan 2017 16:01\|updateWorkflowRequest.getStepId' BPM.log (-n show line number)
+grep -e '24 Jan 2017 16:01' -e 'updateWorkflowRequest.getStepId' BPM.log (in -e mode, it means you can only with one value for each -e)
+grep -E '24 Jan 2017 16:01|updateWorkflowRequest.getStepId' BPM.log (in -E mode, it means extended regex, you don't need to user \ in this mode)
+
+#Verified (vi related)
+#Find matched string with AND condition (You can use \& in vi to search for AND conditions eg: in vi seach mode, INPUT /.*24 Jan 2017 16:01\&.*updateWorkflowRequest.getStepId  )
+#There is no AND operator in grep, but you can have AND operator in -E mode
+grep -E '24 Jan 2017 16:01.*updateWorkflowRequest.getStepId' BPM.log (in the order of time goes first and getStepId follows it)
+grep -E '24 Jan 2017 16:01.*updateWorkflowRequest.getStepId|updateWorkflowRequest.getStepId.*24 Jan 2017 16:01' BPM.log (in any order, times goes first or time goes last)
+
+#Find matched string with NON-Match condition
+ps -f | grep -v ps
+
+
+
+	
+#nohup
+# & in the end of the command
+nohup allows the background process to continue running even after the user logs out (or exits the initiating shell).
+& runs the whole thing in the background, giving you your prompt back immediately
+
+
+#Print desiganted number of lines in a file
+sed -n -e 29019,29581p BPM.log
+
+#How to compare two filesIf no differences are found, by default, cmp returns no output.
+$ cmp OpenAccountMediation.mediation CopyOpenAccountMediation.mediation
+
+#########################################
+######    Display OS Inforamtion   ######
+#########################################
+Way 1:
+$> uname -a
+
+Way 2:
+$> cat /proc/version
+
+
+
+#########################################
+######      List all OS users      ######
+#########################################
+The /etc/passwd file is a text file with one record per line, each describing a user account. Each record consists of seven fields separated by colons. The ordering of the records within the file is generally unimportant.
+The /etc/group − This file contains the group information for each account.
+
+An example record may be:
+root:x:0:0:root:/root:/bin/bash
+bpmadm:x:1000:1000:bpm_4_0:/home/bpmadm:/bin/bash
+
+The fields, in order from left to right, are:
+1. User name: the string a user would type in when logging into the operating system
+2. Information used to validate a user's password; in most modern uses, this field is usually set to "x" (or "*", or some other indicator) with the actual password information being stored in a separate shadow password file.
+3. user identifier number, used by the operating system for internal purposes. It need not be unique.
+4. group identifier number, which identifies the primary group of the user; all files that are created by this user may initially be accessible to this group.
+5. Gecos field, commentary that describes the person or account. Typically, this is a set of comma-separated values including the user's full name and contact details. (bpm_4_0 in the example)
+6. Path to the user's home directory.
+7. Program that is started every time the user logs into the system. For an interactive user, this is usually one of the system's command line interpreters (shells).
+
+Eg:
+#Case 1: Search matched lines and with number (here is 2) of lines in preceding and trailing
+[bpmadm@localhost tibco]$ cat /etc/passwd | grep -n --context=2 root
+1:root:x:0:0:root:/root:/bin/bash
+2-bin:x:1:1:bin:/bin:/sbin/nologin
+3-daemon:x:2:2:daemon:/sbin:/sbin/nologin
+--
+8-halt:x:7:0:halt:/sbin:/sbin/halt
+9-mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+10:operator:x:11:0:operator:/root:/sbin/nologin
+11-games:x:12:100:games:/usr/games:/sbin/nologin
+12-ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
+
+#Case 2: Search with or condition -> -e "Condition 1\|Condition 2" OR -e 'Condition 1\|Condition 2' (Single or Double Quotes, no difference)
+[bpmadm@localhost tibco]$ cat /etc/passwd | grep -n -e 'root\|mail'
+1:root:x:0:0:root:/root:/bin/bash
+9:mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+10:operator:x:11:0:operator:/root:/sbin/nologin
+
+
