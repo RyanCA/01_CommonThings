@@ -131,7 +131,7 @@ https://www.linuxquestions.org/questions/linux-software-2/searching-multiple-pat
 eg: Search in OR conditions
 /abc\|efg
 
-eg: Search in AND conditions
+eg: Search in AND conditions ??? NOT verified
 /abc\&efg
 
 #########################################
@@ -200,6 +200,9 @@ cp /templates/apple /templates/used || mv /templates/apple /templates/inuse
 #Execute regardless command before ; is executed successfully or not
 cp /templates/apple /templates/used; mv /templates/apple /templates/inuse
 
+#########################################
+######         Grep                ######
+#########################################
 #Find matched log based on a pattern and also display number of lines of leading and trailing context (Defined by -C)
 grep -C 1 "Jan 2017 12:17:32" BPM.log 
 
@@ -218,7 +221,12 @@ grep -E '24 Jan 2017 16:01.*updateWorkflowRequest.getStepId|updateWorkflowReques
 #Find matched string with NON-Match condition
 ps -f | grep -v ps
 
+#Find matched string, it will display contents more than matched string, sometimes, it could be too much and occupy too much buffer,which cause you can't see all result from grep 
+grep 6b890ee1-d176-4a69-a9da-f1024b2b51c3 *
+BPMNode01.log.8:20 Sep 2017 02:54:30,532 [AMX JCA Thread_2] [INFO ] [WealthOnBoardingService] stdout - LOB for 6b890ee1-d176-4a69-a9da-f1024b2b51c3 is: nb
 
+Alternatives: -o, --only-matching, no additional words
+grep -o 6b890ee1-d176-4a69-a9da-f1024b2b51c3 *
 
 	
 #nohup
