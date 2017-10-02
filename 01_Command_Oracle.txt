@@ -221,12 +221,14 @@ SELECT RESOURCE_NAME,LIMIT FROM DBA_PROFILES WHERE PROFILE='DEFAULT' AND RESOURC
 SELECT USERNAME, ACCOUNT_STATUS, EXPIRY_DATE  FROM DBA_USERS WHERE USERNAME in ('BPMUSER', 'PCD', 'ORACLE');
 
 4. Set the updated default password policy profile and reset the password for the user account associated for the Mobility Suite's databases while also unlocking the user account
-ALTER USER PCD PROFILE DEFAULT;
-connect PCD;
-ALTER USER PCD IDENTIFIED BY pcd;
-ALTER USER PCD ACCOUNT UNLOCK;
+ALTER USER username PROFILE DEFAULT;
+connect username;
+ALTER USER username IDENTIFIED BY password;
+ALTER USER username ACCOUNT UNLOCK;
 
-5. If there are still somthing.... check this step...
+#you can use below one to switch to system admin and query the sql for new status of the unlocked users-password-when-it-has-expired
+connect sys as sysdba
+SELECT USERNAME, ACCOUNT_STATUS, EXPIRY_DATE  FROM DBA_USERS WHERE USERNAME in ('username1', 'username2', 'username3');
 
 		
 ###############################################################################
@@ -275,5 +277,12 @@ cd /home/bpmadm/TIBCO_HOME/tibco/data/tibcohost/Admin-AMX-BPM-AMX-BPM-Server/dat
 ### Tibco keystore path
 cd /home/bpmadm/TIBCO_HOME/tibco/data/bpm/amx.bpm.app/keystores
 amx-bpm-wss-keystore.jks
+
+###############################################################################
+##########  SQL Reference                                               #######
+###############################################################################
+1. to_timestamp, column of start_time is timestamp type
+select * from monitor_wealthmanagement where start_time> TO_TIMESTAMP('17-08-21 17:52:00', 'YY-MM-DD HH24:MI:SS') order by start_time desc;
+
 
 
