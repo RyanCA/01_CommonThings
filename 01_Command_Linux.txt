@@ -1,4 +1,23 @@
 
+-------------------------------------------------------------------------------
+-----------------------      Network command      -----------------------------
+-------------------------------------------------------------------------------
+#1. Diagnose your network issues to see at which node your connection failed to 
+#   get connected. (For both Winodws and Linux OS)
+tracert www.google.com
+
+#2. Parse domain name into ip address (across Windows and Linux OS)
+nslookup www.google.com
+
+#3. Tell if server port is open to external to accessible (across Windows/Linux)
+#   if this command bring you into a next stage, the cursor is blinking in it, 
+#   it demonstrates the connection is ok, otherwise it will show you prompt that 
+#   waitting for connection
+telnet HostMachineIPOrHostMachineDomainName port
+
+#The following is failed connection outcome
+$ telnet HostMachineIPOrHostMachineDomainName port
+Connecting To hostname...
 
 -------------------------------------------------------------------------------
 -----------------------      Windows command      -----------------------------
@@ -101,8 +120,7 @@ echo $0
 ###### downloading log from hosting machine to remote machine ######
 ####################################################################
 #For SIT1 log download
-scp bpmadm@hostingmachinename:/opt/tibco/amx-bpm/data/tibco/data/tibcohost/Admin-BPM-BPM/data_3.2.x/nodes/BPMNode01/logs/BPMNode01.log BPMNode01.log
-scp bpmadm@bpm8bcclstapp01.srv.bmogc.net:/opt/tibco/amx-bpm/data/tibco/data/tibcohost/Admin-BPM-BPM/data_3.2.x/nodes/BPMNode01/logs/BPMNode01.log BPMNode01.log
+scp bpmadm@HostMachineName:/opt/tibco/amx-bpm/data/tibco/data/tibcohost/Admin-BPM-BPM/data_3.2.x/nodes/BPMNode01/logs/BPMNode01.log BPMNode01.log
 
 #########################################
 ######         vi                  ######
