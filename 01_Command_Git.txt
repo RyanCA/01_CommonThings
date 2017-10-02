@@ -1,7 +1,7 @@
 
 
 ###############################################################################
-######### 1. Routine Procedure for commiting code to PWOB project     #########
+######### 1. Routine Procedure for commiting code to project          #########
 ###############################################################################
 
 #1. Get source code from Git
