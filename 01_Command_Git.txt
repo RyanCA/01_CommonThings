@@ -1,3 +1,5 @@
+
+
 ###############################################################################
 ######### 1. Routine Procedure for commiting code to PWOB project     #########
 ###############################################################################
@@ -26,6 +28,8 @@ git add src/*.mediation
 #
 git diff src/*.wsdl
 git add src/*.wsdl
+(git compared a file in two diffrent commit)
+git diff 5b5438205d18af5990c8cbcaaa44ddb58ebbb595 0b5d461f45abeba4400f2425fe9f30f456077c8a src/.../*.xsd
 
 
 #6. Commit with comments 
@@ -37,7 +41,7 @@ $ git remote -v
 origin  ... (fetch)
 origin  ... (push)
 
-#List all branches
+#List all branches (Including current one)
 $ git branch -a
 * develop
   ...
@@ -58,6 +62,38 @@ git push origin develop
 git log
 git log src/*.mediation
 git checkout 71aff7019490143f59e1586236d4d6ecf9fcc741 src/*.mediation
+
+#10. Git create a new branch 
+10.1 
+git clone https://rliuxx@hostname/path.../filename.git
+
+10.2 #This will create a local branch on current commit
+git branch HealthManagement #create a local branch
+
+10.3 #This will create a remote branch 
+     #git push <remote-name> <branch-name>  Reference https://stackoverflow.com/questions/1519006/how-do-you-create-a-remote-git-branch
+$git push origin WealthManagement
+---------------------------------------------->
+Total 0 (delta 0), reused 0 (delta 0)
+remote:
+remote: Create pull request for WealthManagement:
+remote:   https://hostname/...compare/commits?sourceBranch=refs/heads/WealthManagement
+remote:
+To https://hostname/path.../filename.git
+ * [new branch]      HealthManagement -> HealthManagement
+<-----------------------------------------------
+
+10.4 check if branch is in remote server
+$ git branch -a
+* HealthManagement #local server
+  master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/HealthManagement #remote server
+  remotes/origin/master
+
+#11. git delete a branch (-d is safe, will prevent delete if have unmerged code; -D is force delete)
+git branch -d HealthManagement
+
 
 ###############################################################################
 ######### 2. Useful git command set                                   #########
@@ -95,7 +131,9 @@ git push origin develop
 ###############################################################################
 ######### Good Practice 2: Git switch branches and commit code  ###############
 ###############################################################################
+#git checkout branch
 git checkout r1707_R5
+
 #The one marked with * asterisk is the branch currently working on
 git branch -a 
 git status
@@ -257,3 +295,4 @@ Changes not staged for commit:
         modified:   src/.../*.form
         deleted:    src/.../*.properties
 no changes added to commit (use "git add" and/or "git commit -a")
+
