@@ -1,0 +1,5 @@
+1. Nodepad++
+   Good for code comparision (but you need to install plugin for this function)
+
+2. Cygwin
+   Good to run linux command in window OS
