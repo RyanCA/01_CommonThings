@@ -70,7 +70,7 @@ $ jps -v
 8716 jar -Dname=MornitoringWealthManagement -Dspring.profiles.active=default,dev
 
 #2. Based on winpid to find out process id
-$ ps /help
+$ ps /help #OR ps -el
       PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
      6208    8808    6208       6312  cons1    1686989 13:54:37 /usr/bin/ps
      9068    8808    9068       8716  cons1    1686989   Sep 18 /cygdrive/c/Program Files/Java/jdk1.8.0_131/bin/java
