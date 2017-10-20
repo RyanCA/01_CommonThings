@@ -2,23 +2,24 @@
 ######################################################################
 ###### How to call these functions                              ######
 ###### 0. Set the file excutable                                ######
-######    $> chmod 764 HelloWorld.sh                            ######
+######    $> chmod 764 01_helloworld.sh                         ######
 ######    $> . HelloWorld.sh                                    ######
 ###### 1. Set your script file under PATH by editing .bash_profile at home folder ######
 ######    vi /home/bpmadm/.bash_profile                         ######
-######    PATH=$PATH:/home/bpmadm/Ryan; export PATH             ######
+######    PATH=$PATH:/ryan; export PATH                         ######
 ###### 2. Exec the .bash_profile to make change effective       ######
 ######    $>. ~/.bash_profile                                   ######
 ###### 3. Verify if PATH variable has new values                ######
 ######    $> echo $PATH                                         ###### 
-###### 4. Run these function of the script                      ######
+###### 4. Run these functions of the script                     ######
 ######    $> HelloParam                                         ######
 ######    $> ps | HelloPipe                                     ######
 ######    $> HelloString ABC EFG                                ######
-######    $> echo $? #To See the return value of last command   ######
+######    #Show return value of last command HelloString ABC EFG######
+######    $> echo $?                                            ######
 ######################################################################
 
-echo "Hello"; # I found this statement is important otherwise it will be failed to execute command $> . HelloWorld.sh because all the other statements are in function
+echo "Hello, system is executing 01_helloworld.sh"; # I found this statement is important otherwise it will be failed to execute command $> . HelloWorld.sh because all the other statements are in function
 
 #################################################
 ###### Display the arguments of the script ######
@@ -26,7 +27,7 @@ echo "Hello"; # I found this statement is important otherwise it will be failed 
 ###### http://stackoverflow.com/questions/6697753/difference-between-single-and-double-quotes-in-bash ######
 #################################################
 HelloParam(){
-echo "Starting HelloParam()";
+echo "BEGIN 01_helloworld.sh HelloParam()";
 echo 'File name of current script:$0='$0; # $ won't be interpreated by '
 echo "Number of arguments \$#="$#;        # $ will be interpreated by " ( ` and \ also will be interpreated by " ) 
 echo "All arguments \$*="$*;
@@ -36,7 +37,8 @@ echo "Exit status of last command \$?="$?; #Actually it is the return value of l
 echo "Process number of current shell \$\$="$$;
 echo "Process number of last background command \$!="$!;
 
-echo "Ending HelloPara()";
+echo "END 01_helloworld.sh HelloParam()";
+
 }
 
 
@@ -44,7 +46,11 @@ echo "Ending HelloPara()";
 ###### scripts to work with stdin such as pipe |                                               ######
 ###### (pipe is used to convert standard output as standar input for next command)             ######
 ###### There are two types of input 1. Standard input 2. Input as arguement                    ######
-###### How to execute this script eg:1. $> chmod +777 HelloWorld.sh 2. $> ps | . HelloWorld.sh ###### 
+###### How to execute this script                                                              ###### 
+###### eg:1. $> chmod +777 01_helloworld.sh                                                    ######
+######    2. $> . 01_helloworld.sh                                                             ######
+######    3. $> ps | HelloPipe                                                                 ######
+
 #####################################################################################################
 
 # IFS='' (or IFS=) prevents leading/trailing whitespace from being trimmed.
@@ -52,22 +58,26 @@ echo "Ending HelloPara()";
 # || [[ -n $line ]] prevents the last line from being ignored if it doesn't end with a \n (since read returns a non-zero exit code when it encounters EOF).
 
 HelloPipe(){
-printf "Starting HelloPipe() \n";
+printf "BEGIN 01_helloworld.sh HelloPipe() \n";
 while IFS='' read -r line; do
-    echo "Text read from file: $line"
+    echo "reading line from pipe: $line"
 done
 
-printf "Ending HelloPipe() \n";
+printf "END 01_helloworld.sh HelloParam() HelloPipe() \n";
 }
 
 
 #################################################
-###### Display the input and check return  ######
+###### How to get input and return         ######
 ###### $>HelloString abc efg               ######
 ###### $>echo $?   #To get the return of 10######
+###### Refer helloString() for string return ####    
 #################################################
 HelloString(){
-   echo "Hello, you are in HelloString() Function, $1, $2";
+   echo "BEGIN 01_helloworld.sh HelloString()"
+   echo 'Input para $1='$1' $2='$2
+   echo "END 01_helloworld.sh HelloString() return 10"
+
    return 10;
 }
   
@@ -90,7 +100,9 @@ HelloString(){
 tac(){
     # ps -ef | tac  # you can see the original output
 	# after apply this implementation, the command tac just changed it behavior 
-    echo "Hello Tac"
+    echo "BEGIN 01_helloworld.sh tac()"
+	echo "END 01_helloworld.sh tac()"
+
 }
 
 
@@ -115,12 +127,18 @@ helloSignal(){
 }
 
 ###############################################################################
-######   How to return string and retrieve it from calling script        ######
+######   How to return strings and retrieve them from calling script     ######
 ######   DONE                                                            ######
 ###############################################################################
 
 #Understanding the concetps of command substitutiona and variable substition
 #https://www.tutorialspoint.com/unix/unix-shell-substitutions.htm
+#`command` : command substition (``)is used to assign command output to a variable 
+#variable substitution: eg: ${var:?message} ->  If var is null or unset, message 
+                                               # is printed to standard error. 
+											   # This checks that variables are set 
+											   # correctly.
+											   
 
 #Understanding the concept of process substitution, it is very similar to pipe ??? Need more reasearch on this
 #http://tldp.org/LDP/abs/html/process-sub.html
@@ -134,11 +152,17 @@ helloString(){
    echo "String line 2: def"
 }
 
-#How to get the func return. 
+###############################################################################
+######         How to get the func string return                         ######
+######         Refer HelloString() for number return                     ###### 
+###############################################################################
+
+
 #Be aware that if you put below block ahead of the func difinition such as,  
 #at the begining of the script, shell won't know the command helloString. 
 #here is the error message for reference:
 #bash: helloString: command not found...
+
 returnString=""
 returnString=`helloString`
 echo 'returnString='$returnString 
