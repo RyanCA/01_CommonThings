@@ -12,13 +12,14 @@
 ###### 3. Verify if PATH variable has new values                ######
 ######    $> echo $PATH                                         ###### 
 ###### 4. Run these function of the script                      ######
-######    $> helloparam2                                        ######
-######    $> getprocessbyport 8080                              ######
-######    $> HelloString ABC EFG                                ######
-######    $> echo $? #To See the return value of last command   ######
+######    $ helloparam2                                         ######
+######    $ getprocessbyport 8080                               ######
+######    $ monitoringjob status                                ######
+######    $ monitoringjob start                                 ######
+######    $ monitoringjob stop                                  ######
 ######################################################################
 
-echo "Hello, system is executing 01_helloworld_01_process_by_port.sh script now"; # I found this statement is important otherwise it will be failed to execute command $> . HelloWorld.sh because all the other statements are in function
+echo "Hello, execution of script 01_helloworld_01_utility.sh is STARTED now"; # I found this statement is important otherwise it will be failed to execute command $> . HelloWorld.sh because all the other statements are in function
 
 #################################################
 ###### Display the arguments of the script ######
@@ -39,6 +40,16 @@ echo "Process number of last background command \$!="$!;
 echo "END 01_helloworld_01_utility.sh helloparam2()";
 }
 
+#################################################
+###### getprocessbyport()                  ######
+######                                     ######
+###### It tells which process occupied the ######
+###### input port                          ######
+######                                     ######
+###### Usage:                              ######
+###### $ getprocessbyport 8080             ######
+#################################################
+
 #This version use Pipe to join my own function readnumberfrompipe
 #Refer to another version of implementation: getprocessbyport2()
 getprocessbyport(){
@@ -49,7 +60,7 @@ getprocessbyport(){
    ### Tell is first parameter is null ###
    #######################################
    if [[ -z "$1" ]]; then
-       echo "01_helloworld_01_utility.sh getprocessbyport() input $1 is null, return with value 1"
+       echo "input $1 is null, return with value 1"
        return 1
    fi
    
@@ -82,6 +93,20 @@ readnumberfrompipe(){
 
 
 
+#################################################
+###### Monitoring job script               ######
+######                                     ######
+###### It applies to start or kill any java######
+###### program with just code changes      ######
+######                                     ######
+###### Make sure your java program is      ######
+###### in place                            ######
+######                                     ######
+###### Usage:                              ######
+###### $ monitoringjob status              ######
+###### $ monitoringjob start               ######
+###### $ monitoringjob stop                ######
+#################################################
 
 monitoringjob(){
     echo "BEGIN 01_helloworld_01_utility.sh monitoringjob()"
@@ -94,30 +119,63 @@ monitoringjob(){
        return 1
     fi
 	
-	if [[ "$1" == "stop" ]]
+	if [[ $1 = "stop" ]]
 	then
-	   echo 'input $1==stop'
+	   echo 'input $1=stop'
 	   numberOfString=`jps -vl | grep MornitoringWealthManagement-1.0-SNAPSHOT.jar | awk '{print $1}'`
-       echo "01_helloworld_01_utility.sh monitoringjob() get WINPID=$numberOfString"
+       echo "get WINPID=$numberOfString"
 	
-	   #Showing title for better debug
+
+	   
+	   if [[ -z "$numberOfString" ]]
+	   then
+		   echo "process id is null, monitoring job is NOT running;"
+	   else
+	      	   #Showing title for better debug
 	   #ps -el | head -n 1
     
-	   processid=`ps -el | grep $numberOfString | awk '{print $1}'`
-	   winpid=`ps -el | grep $numberOfString | awk '{print $4}'`
-	   echo "01_helloworld_01_utility.sh monitoringjob() get PID=$processid"
-	   echo "01_helloworld_01_utility.sh monitoringjob() get WINPID=$winpid"
+		  processid=`ps -el | grep $numberOfString | awk '{print $1}'`
+		  winpid=`ps -el | grep $numberOfString | awk '{print $4}'`
+		  echo "get PID=$processid"
+		  echo "get WINPID=$winpid"
+		  
+	      echo "killing process $processid start"
+	      kill -9 $processid
+		  echo "killing process $processid DONE"
+       fi
 	   
-	elif [[ "$1" == "stop2" ]]
+	elif [[ $1 = "status" ]]
 	then
-	   echo 'input $1==stop2'
+	   echo 'input $1=status'
+	   numberOfString=`jps -vl | grep MornitoringWealthManagement-1.0-SNAPSHOT.jar | awk '{print $1}'`
+       echo "get WINPID=$numberOfString"
+	   if [[ -z "$numberOfString" ]]
+	   then
+	      echo "Monitoringj ob is NOT in running"
+	   else
+	      echo "Monitoring job() is in running status"
+	   fi
 	   
-	elif [[ "$1" == "stop3" ]]
+	elif [[ $1 = "start" ]]
 	then
-	   echo 'input $1==stop3'
+	   echo 'input $1=start'
+	   numberOfString=`jps -vl | grep MornitoringWealthManagement-1.0-SNAPSHOT.jar | awk '{print $1}'`
+       echo "Monitoring job get WINPID=$numberOfString"
+	   
+	   if [[ -z "$numberOfString" ]]
+	   then
+	      echo "Monitoring job is NOT in running"
+		  echo "Monitoring job is starting now"
+		  nohup java -Dname=MornitoringWealthManagement -Dspring.profiles.active=default,dev -jar MornitoringWealthManagement-1.0-SNAPSHOT.jar & 
+		  echo "Monitoring job is running"
+		  
+	   else
+	      echo "Monitoring job is already in running status"
+	   fi
 	   
 	else
-	   
+	   echo 'input $1 get into else condition block'
+
 	fi
 	
     echo "END 01_helloworld_01_utility.sh monitoringjob()"
@@ -125,4 +183,5 @@ monitoringjob(){
 
 }
 
+echo "Execution of script 01_helloworld_01_utility.sh is DONE"
 
