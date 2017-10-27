@@ -65,12 +65,13 @@ Address:  172.217.3.132
 #####################################################
 
 #1. To find out winpid (As you can see, you have to pass in some parameters when you run your java program, this way can help you distiguish your program with others)
-$ jps -v
+$ jps -lv #-l shows the package name of main class or path name of the jar file #-v displays arguments passed to the JVM
+
 7496 Jps -Dapplication.home=C:\Program Files\Java\jdk1.8.0_131 -Xms8m
 8716 jar -Dname=MornitoringWealthManagement -Dspring.profiles.active=default,dev
 
 #2. Based on winpid to find out process id
-$ ps /help #OR ps -el
+$ ps -el
       PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
      6208    8808    6208       6312  cons1    1686989 13:54:37 /usr/bin/ps
      9068    8808    9068       8716  cons1    1686989   Sep 18 /cygdrive/c/Program Files/Java/jdk1.8.0_131/bin/java
@@ -83,6 +84,86 @@ kill -9 9068
 -------------------------------------------------------------------------------
 -----------------------      Linux command      -------------------------------
 -------------------------------------------------------------------------------
+
+#########################################
+### Command for CPU, Mem, Disk Info  ####
+#########################################
+#CPU
+$cat /proc/cpuinfo
+
+#Mem
+$cat /proc/meminfo
+
+#Disk (take log foler for an example)
+$df -h
+#logs folder is under /opt/...
+#find File system for /opt
+#check if enough space is there (Only 52% is used)
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+[bpmadm@bpm8bccldvapp01 logs]$ pwd
+/opt/tibco/amx-bpm/data/tibco/data/tibcohost/Admin-BPM-BPM/data_3.2.x/nodes/BPMNode01/logs
+[bpmadm@bpm8bccldvapp01 logs]$ df -h
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/mapper/rootvg-rootlv
+                       18G  2.7G   14G  17% /
+tmpfs                 7.8G     0  7.8G   0% /dev/shm
+/dev/sda1             488M  107M  357M  23% /boot
+/dev/mapper/rootvg-homelv
+                      4.8G   15M  4.6G   1% /home
+/dev/mapper/rootvg-optlv
+                       36G   18G   17G  52% /opt
+/dev/mapper/rootvg-bmcappslv
+                       25G  419M   23G   2% /opt/bmc
+/dev/mapper/rootvg-tmplv
+                       15G   40M   14G   1% /tmp
+/dev/mapper/rootvg-varlv
+                       20G  2.3G   17G  13% /var
+10.193.58.218:/soft/build
+                      296G  253G   40G  87% /mnt
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+$ls -lth #h is in human readable format such that file size in M
+
+#########################################
+### Command for network              ####
+#########################################
+#Print route table
+netstat -r
+
+#Print with processId information
+netstat -nlp #n displays ip in numerlic way rather than hostname; #l displays listening port; #p displays process id
+
+#Print the process info based on port number
+
+Step 1: 
+netstat -nlp | head -n 2 #Get the table header "-n 2" might need to adjust due to different linux version
+
+Step 2:
+netstat -nlp | tail -n +3 # List all the result except first 3 rows (They are table header information)
+
+Step 3:
+#Based on step 2, use pipe | and sed to replace multiple spaces (1 or many) with > and search for the process by port
+#https://ss64.com/bash/sed.html
+#s/REGEXP/REPLACEMENT/FLAGS (g Apply the replacement to *all* matches to the REGEXP, not just the first)
+sed 's/ \+/>/g' | grep 4444 #(replace multiple spaces to >)
+
+#there is a better way to select value for a designated column, that is
+awk '{print $1}'   #$1 represents first column
+
+
+
+
+All in one:
+#Not necessary to use sed to change the stream
+netstat -nlp | head -n 2; netstat -nlp | tail -n +3 | sed 's/ \+/ /g' | grep 8080 | awk '{print $7}'
+
+#Easy version
+netstat -nlp | head -n 2; netstat -nlp | tail -n +3 | grep 8080 | awk '{print $7}' | tail -n 1
+
+
+
+
 http://ss64.com/vi.html
 http://ss64.com/bash/find.html
 
@@ -120,7 +201,7 @@ echo $0
 ###### downloading log from hosting machine to remote machine ######
 ####################################################################
 #For SIT1 log download
-scp bpmadm@HostMachineName:/opt/tibco/amx-bpm/data/tibco/data/tibcohost/Admin-BPM-BPM/data_3.2.x/nodes/BPMNode01/logs/BPMNode01.log BPMNode01.log
+scp bpmadm@hostingmachinename:/opt/tibco/amx-bpm/data/tibco/data/tibcohost/Admin-BPM-BPM/data_3.2.x/nodes/BPMNode01/logs/BPMNode01.log BPMNode01.log
 
 #########################################
 ######         vi                  ######
@@ -307,5 +388,3 @@ Eg:
 1:root:x:0:0:root:/root:/bin/bash
 9:mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
 10:operator:x:11:0:operator:/root:/sbin/nologin
-
-
