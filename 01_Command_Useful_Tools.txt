@@ -3,3 +3,22 @@
 
 2. Cygwin
    Good to run linux command in window OS
+   You can find the mounted disk by following command:
+   
+   $ ls /cygdrive/
+   c  h  z
+   
+3. SOAP UI for testing web service
+
+4. Oracle SQL Developer for SQL development
+
+5. MtPutty (Multi-Tabbed Putty) 
+   Import tree/export tree to import or export config file
+    
+6. Crob job schedule tool and more
+https://www.freeformatter.com/cron-expression-generator-quartz.html
+
+7. Survey Monkey
+https://www.surveymonkey.com/
+
+
